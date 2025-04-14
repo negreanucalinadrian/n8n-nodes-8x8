@@ -1,13 +1,14 @@
 import {IRequestOptions} from "n8n-workflow/dist/Interfaces";
-/* eslint-disable @typescript-eslint/no-explicit-any */
-const replacePlaceholders = (template: string, data: any) => {
+import {IEghtOperationList} from "./types";
+
+const replacePlaceholders = (template: string, data: Record<string, string>) => {
     return template.replace(/{(\w+)}/g, (_, key) => {
         if (key in data) return data[key];
         return `{${key}}`;
     });
 }
 
-const operations: any = {
+const operations: Record<string, IEghtOperationList> = {
     sms: {
         base: 'https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/messages',
         operations: {
@@ -35,7 +36,7 @@ const operations: any = {
     }
 }
 
-export const buildRequest = (resource: string, operation: string, uriParams: object, formParams: object): IRequestOptions => {
+export const buildRequest = (resource: string, operation: string, uriParams: Record<string, string>, formParams: object): IRequestOptions => {
     const baseReq: IRequestOptions = {
         headers: {
             Accept: "application/json",
@@ -50,4 +51,19 @@ export const buildRequest = (resource: string, operation: string, uriParams: obj
         baseReq.body = formParams;
     }
     return baseReq;
+}
+/**
+ * Removes empty fields from form object and trims each value
+ *
+ * @param formParams
+ */
+export const getCleanFormData = (formParams: Record<string, string>): Record<string, string> => {
+    const formDataTemp = JSON.parse(JSON.stringify(formParams));
+    for (const key in formDataTemp) {
+        formDataTemp[key] = formDataTemp[key].trim();
+        if (formDataTemp[key] === '') {
+            delete formDataTemp[key];
+        }
+    }
+    return formDataTemp;
 }

@@ -7,7 +7,7 @@ import {
 } from "n8n-workflow";
 import {sendSMSApi} from "./apis/SendSMSApi";
 import {sendSMSApiParameters} from "./parameters/SendSMSApiParameters";
-import {buildRequest} from "./executeOptions";
+import {buildRequest, getCleanFormData} from "./executeOptions";
 import {NodeConnectionType} from "n8n-workflow/dist/Interfaces";
 
 export class EightByEight implements INodeType {
@@ -57,33 +57,27 @@ export class EightByEight implements INodeType {
 
         for (let i = 0; i < items.length; i++) {
             try {
-                /* eslint-disable @typescript-eslint/no-explicit-any */
-                const requestUriParams: any = {}
+                const requestUriParams: Record<string, string> = {}
                 //URI params
                 if (resource === "sms") {
                     requestUriParams.subAccountId = this.getNodeParameter("subAccountId", i) as string;
                     if (operation === "cancelBatchScheduledSMS") {
                         requestUriParams.batchId = this.getNodeParameter("batchId", i) as string;
                     }
-                    if (["sendSMSSuccessFeedback","cancelTheScheduledSMS"].includes(operation)) {
+                    if (["sendSMSSuccessFeedback", "cancelTheScheduledSMS"].includes(operation)) {
                         requestUriParams.umid = this.getNodeParameter("umid", i) as string;
                     }
                 }
                 //Form params
-                let formParams: any = {}
+                let formParams: Record<string, string> = {}
                 if (resource === "sms") {
                     if (operation === "sendSMS") {
-                        formParams = this.getNodeParameter("message.message", i);
+                        formParams = getCleanFormData(this.getNodeParameter("message.message", i) as Record<string, string>);
                         if (!formParams.text) {
                             throw new Error('Text is required');
                         }
                         if (!formParams.destination) {
                             throw new Error('Destination is required');
-                        }
-                        for (const key in formParams) {
-                            if (formParams[key].trim() === '') {
-                                delete formParams[key];
-                            }
                         }
                     }
                 }
@@ -91,7 +85,7 @@ export class EightByEight implements INodeType {
                 const response = await this.helpers.requestWithAuthentication.call(this, 'eightByEightApi', request);
                 if (Array.isArray(response.data)) {
                     returnData.push(
-                        ...response.data.map((team: any) => ({json: team})),
+                        ...response.data.map((response: Record<string, string>) => ({json: response})),
                     );
                 } else {
                     returnData.push({json: response});
