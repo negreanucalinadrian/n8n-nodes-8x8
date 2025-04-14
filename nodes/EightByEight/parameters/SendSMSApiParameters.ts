@@ -132,7 +132,7 @@ export const sendSMSApiParameters: INodeProperties[] = [{
     placeholder: 'Add Message Fields',
     options: [{
         displayName: 'Message Details',
-        name: 'details',
+        name: 'message',
         values: [...messageForm],  // Wrap in "values" for fixedCollection
     }],
 },
