@@ -57,6 +57,7 @@ export class EightByEight implements INodeType {
 
         for (let i = 0; i < items.length; i++) {
             try {
+                /* eslint-disable @typescript-eslint/no-explicit-any */
                 const requestUriParams: any = {}
                 //URI params
                 if (resource === "sms") {

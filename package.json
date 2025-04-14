@@ -1,21 +1,18 @@
 {
-  "name": "n8n-nodes-8x8",
-  "version": "0.1.0",
-  "description": "",
+  "name": "@negreanucalin8x8/n8n-nodes-8x8",
+  "version": "0.1.2",
   "keywords": [
     "8x8",
     "eght",
-    "eightbyeight"
+    "eightbyeight",
+    "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "",
-  "author": {
-    "name": "",
-    "email": ""
-  },
+  "homepage": "https://github.com/negreanucalinadrian/n8n-nodes-8x8#readme",
+  "author": "Calin Negreanu <calin.negreanu@8x8.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/8x8/n8n-nodes-8x8.git"
+    "url": "https://github.com/negreanucalinadrian/n8n-nodes-8x8.git"
   },
   "main": "index.js",
   "scripts": {
@@ -35,7 +32,7 @@
       "dist/credentials/EightByEight.credentials.ts"
     ],
     "nodes": [
-      "dist/nodes/EightByEight/EightByEightNode.node.js"
+      "dist/nodes/EightByEight/EightByEight.node.js"
     ]
   },
   "devDependencies": {

@@ -15,6 +15,7 @@ export default defineConfig([
                     "ts-ignore": false // Allow @ts-ignore
                 }
             ],
+            "@typescript-eslint/no-explicit-any": ["off"],
             indent: ["error", 4],
         },
     },

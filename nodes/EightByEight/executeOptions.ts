@@ -1,5 +1,5 @@
 import {IRequestOptions} from "n8n-workflow/dist/Interfaces";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const replacePlaceholders = (template: string, data: any) => {
     return template.replace(/{(\w+)}/g, (_, key) => {
         if (key in data) return data[key];
