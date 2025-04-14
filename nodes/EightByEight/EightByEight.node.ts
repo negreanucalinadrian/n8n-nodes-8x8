@@ -73,16 +73,21 @@ export class EightByEight implements INodeType {
                 let formParams: any = {}
                 if (resource === "sms") {
                     if (operation === "sendSMS") {
-                        formParams = this.getNodeParameter("message", i);
-                        if (!formParams.message.text) {
+                        formParams = this.getNodeParameter("message.message", i);
+                        if (!formParams.text) {
                             throw new Error('Text is required');
                         }
-                        if (!formParams.message.destination) {
+                        if (!formParams.destination) {
                             throw new Error('Destination is required');
+                        }
+                        for (const key in formParams) {
+                            if (formParams[key].trim() === '') {
+                                delete formParams[key];
+                            }
                         }
                     }
                 }
-                const request = buildRequest(resource, operation, requestUriParams, formParams)
+                const request = buildRequest(resource, operation, requestUriParams, formParams);
                 const response = await this.helpers.requestWithAuthentication.call(this, 'eightByEightApi', request);
                 if (Array.isArray(response.data)) {
                     returnData.push(
