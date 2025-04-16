@@ -97,6 +97,10 @@ export class EightByEight implements INodeType {
                         formParams = RequestHelper.getCleanFormData(formParams);
                         break;
                     }
+                    case "cancelTheScheduledSMS":
+                    case "cancelBatchScheduledSMS": {
+                        break;
+                    }
                     default:
                         throw new Error(`The operation "${operation}" is currently under development.`);
                     }
