@@ -68,8 +68,6 @@ export class EightByEight implements INodeType {
                         formParams = RequestHelper.getCleanFormData(
                                 this.getNodeParameter("message.message", i) as Record<string, string>
                         );
-                        //TODO: Check if we really need this
-                        //RequestHelper.throwIfEmptyRequiredFields(messageForm, formParams);
                         break;
                     }
                     case "sendSMSBatch": {

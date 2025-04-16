@@ -1,4 +1,4 @@
-import {INodeProperties, IRequestOptions} from "n8n-workflow/dist/Interfaces";
+import {IRequestOptions} from "n8n-workflow/dist/Interfaces";
 import {RESOURCE_LIST} from "../apiDefinition";
 import {ApiDefHelper} from "./apiDef.helper";
 /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -67,22 +67,6 @@ export class RequestHelper {
         const operationDef = ApiDefHelper.getOperation(resource, operation);
         const str = ApiDefHelper.getResource(resource).base + operationDef.uri;
         return [...str.matchAll(/{(.*?)}/g)].map(m => m[1]);
-    }
-
-    /**
-     * Throw error if missing required parameter
-     * NOTE: Does not do recursion
-     * @param nodeDefinition
-     * @param request
-     */
-    static throwIfEmptyRequiredFields(nodeDefinition: INodeProperties[], request: Record<string, string>) {
-        for (const def of nodeDefinition) {
-            if (def.required) {
-                if (!request[def.name]) {
-                    throw new Error(`Parameter ${def.name} is required and should not be empty`)
-                }
-            }
-        }
     }
 }
 
