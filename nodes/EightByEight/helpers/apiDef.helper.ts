@@ -1,8 +1,34 @@
-import {INodeProperties} from "n8n-workflow/dist/Interfaces";
-import {apiDefinitionTest} from "../apiDefinition";
+import {INodeProperties, INodePropertyOptions} from "n8n-workflow/dist/Interfaces";
+import {apiDefinition, RESOURCE_LIST} from "../apiDefinition";
 
 export class ApiDefHelper {
-    static generateApiFromOperation(resource: string): INodeProperties {
+
+    static getResource(resource: RESOURCE_LIST) {
+        const baseOperationConfig = apiDefinition.find(conf=> conf.resource.value === resource);
+        if (!baseOperationConfig) {
+            throw new Error(`Could not find resource by name: ${resource}`)
+        }
+        return baseOperationConfig;
+    }
+
+    static getOperation(resource: RESOURCE_LIST, operationName: string) {
+        const baseOperationConfig = ApiDefHelper.getResource(resource);
+        const operationConfig = baseOperationConfig.operations.find(operation => operation.operation === operationName);
+        if (!operationConfig) {
+            throw new Error(`Could not find operation by name: ${operationName}`)
+        }
+        return operationConfig;
+    }
+
+    static getResources(): INodePropertyOptions[] {
+        const defList = [];
+        for (const def of apiDefinition) {
+            defList.push(def.resource);
+        }
+        return defList;
+    }
+
+    static generateApiFromOperation(resource: RESOURCE_LIST): INodeProperties {
         const result: INodeProperties = {
             displayName: "Operation",
             name: "operation",
@@ -13,23 +39,20 @@ export class ApiDefHelper {
                     resource: [resource],
                 },
             },
-            options: [],
             default: ''
         };
-        //@ts-ignore
-        const config = apiDefinitionTest.definition[resource] as any;
-        for (const operationName in config["operations"]) {
-            //@ts-ignore
+        result.options = [];
+        const config = ApiDefHelper.getResource(resource);
+        for (const operation of config.operations) {
             result.options.push({
-                name: config["operations"][operationName].displayName,
-                value: operationName,
-                description: config["operations"][operationName].description,
+                name: operation.displayName,
+                value: operation.operation,
+                description: operation.description,
             })
-            if (config["operations"][operationName].default) {
-                result.default = operationName;
+            if (operation.default) {
+                result.default = operation.displayName;
             }
         }
-
         return result;
     }
 }

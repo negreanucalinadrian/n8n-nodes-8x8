@@ -1,5 +1,6 @@
 import {INodeProperties, IRequestOptions} from "n8n-workflow/dist/Interfaces";
-import {apiDefinitionTest, RESOURCE_LIST} from "../apiDefinition";
+import {RESOURCE_LIST} from "../apiDefinition";
+import {ApiDefHelper} from "./apiDef.helper";
 
 export class RequestHelper {
     private replacePlaceholders(template: string, data: Record<string, string>) {
@@ -9,11 +10,6 @@ export class RequestHelper {
         });
     }
 
-    private getOperation(resource: RESOURCE_LIST, operation: string) {
-        const baseOperationConfig = apiDefinitionTest.definition[resource];
-        return baseOperationConfig.operations[operation];
-    }
-
     buildRequest(resource: RESOURCE_LIST, operation: string, uriParams: Record<string, string>, formParams: object): IRequestOptions {
         const baseReq: IRequestOptions = {
             headers: {
@@ -21,8 +17,8 @@ export class RequestHelper {
             },
             json: true,
         };
-        const baseOperationConfig = apiDefinitionTest.definition[resource];
-        const operationConfig = this.getOperation(resource, operation);
+        const baseOperationConfig = ApiDefHelper.getResource(resource);
+        const operationConfig = ApiDefHelper.getOperation(resource, operation);
         baseReq.uri = this.replacePlaceholders(baseOperationConfig.base + operationConfig.uri, uriParams);
         baseReq.method = operationConfig.method;
         if (["POST", "PUT"].includes(baseReq.method || '')) {
@@ -48,8 +44,8 @@ export class RequestHelper {
     }
 
     getAllUriParams(resource: RESOURCE_LIST, operation: string) {
-        const operationDef = this.getOperation(resource, operation);
-        const str = apiDefinitionTest.definition[resource].base + operationDef.uri;
+        const operationDef = ApiDefHelper.getOperation(resource, operation);
+        const str = ApiDefHelper.getResource(resource).base + operationDef.uri;
         return [...str.matchAll(/{(.*?)}/g)].map(m => m[1]);
     }
 

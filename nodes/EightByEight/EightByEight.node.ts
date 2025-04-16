@@ -9,7 +9,7 @@ import {messageForm, sendSMSApiParameters} from "./parameters/SendSMSApiParamete
 import {NodeConnectionType} from "n8n-workflow/dist/Interfaces";
 import {ApiDefHelper} from "./helpers/apiDef.helper";
 import {RequestHelper} from "./helpers/request.helper";
-import {apiDefinitionTest, RESOURCE_LIST, RESOURCE_SMS} from "./apiDefinition";
+import {RESOURCE_LIST, RESOURCE_SMS} from "./apiDefinition";
 
 export class EightByEight implements INodeType {
     description: INodeTypeDescription = {
@@ -37,7 +37,7 @@ export class EightByEight implements INodeType {
                 name: "resource",
                 type: "options",
                 noDataExpression: true,
-                options: apiDefinitionTest.resources,
+                options: ApiDefHelper.getResources(),
                 default: RESOURCE_SMS,
             },
             ApiDefHelper.generateApiFromOperation(RESOURCE_SMS),
