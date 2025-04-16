@@ -95,7 +95,6 @@ export class EightByEight implements INodeType {
                             // Ignore missing destinations
                         }
                         formParams = RequestHelper.getCleanFormData(formParams);
-                        throw new Error(`The operation "${operation}" is currently under development.`);
                     }
                     default:
                         throw new Error(`The operation "${operation}" is currently under development.`);

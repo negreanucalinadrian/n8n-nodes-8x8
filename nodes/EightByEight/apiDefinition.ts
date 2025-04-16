@@ -1,5 +1,5 @@
 import {IEghtOperationList} from "./types";
-import {smsDestinationForm, smsMessageForm, smsTemplateForm} from "./forms";
+import {smsDestinationForm, smsMessageForm, smsTemplateForm} from "./forms/sms.forms";
 
 export const RESOURCE_SMS = 'sms' as const;
 export type RESOURCE_LIST = typeof RESOURCE_SMS;
