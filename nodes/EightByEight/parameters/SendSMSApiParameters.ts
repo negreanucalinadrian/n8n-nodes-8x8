@@ -1,6 +1,7 @@
 import {INodeProperties} from "n8n-workflow/dist/Interfaces";
+import { RESOURCE_SMS } from "../apiDefinition";
 
-const messageForm: INodeProperties[] = [
+export const messageForm: INodeProperties[] = [
     {
         displayName: 'Destination',
         name: 'destination',
@@ -76,7 +77,7 @@ export const sendSMSApiParameters: INodeProperties[] = [{
     description: "ID of the sub-account.",
     displayOptions: {
         show: {
-            resource: ["sms"],
+            resource: [RESOURCE_SMS],
             operation: ["sendSMS", "sendSMSBatch", "cancelBatchScheduledSMS", "sendSMSSuccessFeedback", "cancelTheScheduledSMS"],
         },
     },
@@ -91,7 +92,7 @@ export const sendSMSApiParameters: INodeProperties[] = [{
     description: "Batch id",
     displayOptions: {
         show: {
-            resource: ["sms"],
+            resource: [RESOURCE_SMS],
             operation: ["cancelBatchScheduledSMS"],
         },
     },
@@ -106,7 +107,7 @@ export const sendSMSApiParameters: INodeProperties[] = [{
     description: "Umid id",
     displayOptions: {
         show: {
-            resource: ["sms"],
+            resource: [RESOURCE_SMS],
             operation: ["sendSMSSuccessFeedback", "cancelTheScheduledSMS"],
         },
     },
@@ -120,10 +121,10 @@ export const sendSMSApiParameters: INodeProperties[] = [{
     type: 'fixedCollection',
     typeOptions: {
         multipleValues: false,
-    },  // Remove sortable - not needed for fixed collections
+    },
     displayOptions: {
         show: {
-            resource: ['sms'],
+            resource: [RESOURCE_SMS],
             operation: ['sendSMS'],
         },
     },
@@ -133,7 +134,8 @@ export const sendSMSApiParameters: INodeProperties[] = [{
     options: [{
         displayName: 'Message Details',
         name: 'message',
-        values: [...messageForm],  // Wrap in "values" for fixedCollection
+        values: [...messageForm],
+        required: true
     }],
 },
 //Send SMS batch
@@ -153,7 +155,7 @@ export const sendSMSApiParameters: INodeProperties[] = [{
     },
     displayOptions: {
         show: {
-            resource: ["sms"],
+            resource: [RESOURCE_SMS],
             operation: ["sendSMSBatch"],
         },
     },
