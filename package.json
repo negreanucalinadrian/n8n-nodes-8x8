@@ -12,7 +12,7 @@
   "author": "Calin Negreanu <calin.negreanu@8x8.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/negreanucalinadrian/n8n-nodes-8x8.git"
+    "url": "git+https://github.com/negreanucalinadrian/n8n-nodes-8x8.git"
   },
   "main": "index.js",
   "scripts": {
