@@ -17,6 +17,16 @@ export default defineConfig([
             ],
             "@typescript-eslint/no-explicit-any": ["off"],
             indent: ["error", 4],
+            'no-empty': ['error', { allowEmptyCatch: true }], // allow empty catch blocks generally
+            '@typescript-eslint/no-unused-vars': ['error', {
+                vars: 'all',
+                args: 'after-used',
+                ignoreRestSiblings: true,
+                argsIgnorePattern: '^_',
+                varsIgnorePattern: '^_',
+                caughtErrors: 'all',
+                caughtErrorsIgnorePattern: '^_',
+            }],
         },
     },
     {

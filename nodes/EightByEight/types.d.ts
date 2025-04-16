@@ -1,4 +1,4 @@
-import {INodePropertyOptions} from "n8n-workflow/dist/Interfaces";
+import {INodeProperties, INodePropertyOptions} from "n8n-workflow/dist/Interfaces";
 
 export interface IEghtOperation {
     operation:string;
@@ -13,4 +13,5 @@ export interface IEghtOperationList {
     resource: INodePropertyOptions;
     base: string;
     operations: IEghtOperation[];
+    parameters: INodeProperties[]
 }

@@ -3,8 +3,16 @@ import {apiDefinition, RESOURCE_LIST} from "../apiDefinition";
 
 export class ApiDefHelper {
 
+    static getParameters(): INodeProperties[] {
+        let parameterList: INodeProperties[] = [];
+        for (const def of apiDefinition) {
+            parameterList = parameterList.concat(...def.parameters);
+        }
+        return parameterList;
+    }
+
     static getResource(resource: RESOURCE_LIST) {
-        const baseOperationConfig = apiDefinition.find(conf=> conf.resource.value === resource);
+        const baseOperationConfig = apiDefinition.find(conf => conf.resource.value === resource);
         if (!baseOperationConfig) {
             throw new Error(`Could not find resource by name: ${resource}`)
         }
