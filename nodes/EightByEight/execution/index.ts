@@ -12,23 +12,8 @@ export interface ExecutionParams {
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export type ExecutionFunction = (params: ExecutionParams)=>Promise<any[]>;
 
-// ResourceMap now reflects all supported resource handlers
-interface ResourceMap {
-    [RESOURCE_SMS]: SMSOperations;
-    [RESOURCE_VERIFICATION]: VerificationOperations;
-}
-
 // The mapping object that uses the correct structure
-export const executionMapping: ResourceMap = {
-    [RESOURCE_SMS]: {
-        sendSMS: smsOperations.sendSMS,
-        sendSMSBatch: smsOperations.sendSMSBatch,
-        cancelTheScheduledSMS: smsOperations.cancelTheScheduledSMS,
-        cancelBatchScheduledSMS: smsOperations.cancelBatchScheduledSMS
-    },
-    [RESOURCE_VERIFICATION]: {
-        initiateVerification: verificationApi.initiateVerification,
-        validateVerification: verificationApi.validateVerification,
-        smaCoverageCheck: verificationApi.smaCoverageCheck
-    }
+export const executionMapping = {
+    [RESOURCE_SMS]: smsOperations,
+    [RESOURCE_VERIFICATION]: verificationApi
 };
