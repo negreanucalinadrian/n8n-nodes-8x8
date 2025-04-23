@@ -15,3 +15,6 @@ export interface IEghtOperationList {
     operations: IEghtOperation[];
     parameters: INodeProperties[]
 }
+export type FormRequestValue = string|number|object|undefined;
+export type FormRequest = Record<string, FormRequestValue>;
+export type RequestUriParams= Record<string, string>;

@@ -107,6 +107,89 @@ export const smsMessageForm: INodeProperties[] = [
     }
 ];
 
+export const smsVerificationForm: INodeProperties[] = [
+    {
+        displayName: 'Source',
+        name: 'source',
+        type: 'string',
+        required: false,
+        default: '',
+        description: 'Alphanumeric or numeric string used as Sender ID for the SMS',
+    },
+    {
+        displayName: 'Encoding',
+        name: 'encoding',
+        type: 'options',
+        description: 'Select character encoding format',
+        options: [
+            {
+                name: 'Auto Detect',
+                value: 'AUTO',
+                description: 'Automatically detect encoding',
+            },
+            {
+                name: 'GSM7',
+                value: 'GSM7',
+            },
+            {
+                name: 'UCS2',
+                value: 'UCS2',
+            },
+        ],
+        default: 'AUTO',
+    },
+]
+
+export const callVerificationForm: INodeProperties[] = [
+    {
+        displayName: 'Source',
+        name: 'source',
+        type: 'string',
+        required: false,
+        default: '',
+        description: 'Alphanumeric or numeric string used as Sender ID for the SMS',
+    },
+    {
+        displayName: 'Speed',
+        name: 'speed',
+        type: 'number',
+        required: true,
+        default: '0.8',
+        description: 'It designates the speed of speech in the resulting message.\n' +
+            'Accepted values range from 0.5 to 2, as a two digit number.',
+    },
+    {
+        displayName: 'Repetition',
+        name: 'repetition',
+        type: 'number',
+        required: true,
+        default: '2',
+        description: 'It designated the amount of times to repeat the text content.\n' +
+            'Accepted values are 1, 2 or 3.',
+    },
+    {
+        displayName: 'VoiceProfile',
+        name: 'voiceProfile',
+        type: 'string',
+        required: false,
+        default: '',
+        description: 'It designates the voice, gender and accent for the message you are sending.\n' +
+            'All available voice profiles can be found at https://developer.8x8.com/connect/reference/vm-voice-languages-and-profiles.\n' +
+            'The default value will be chosen based on the language parameter value.',
+    },
+]
+
+export const whatsAppVerificationForm: INodeProperties[] = [
+    {
+        displayName: 'TemplateName',
+        name: 'templateName',
+        type: 'string',
+        required: true,
+        default: '',
+        description: 'It designates the name of the WhatsApp Authentication Template to be used.',
+    },
+]
+
 export const smsTemplateForm: INodeProperties[] = [
     {
         displayName: 'Text',
