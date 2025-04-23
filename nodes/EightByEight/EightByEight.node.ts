@@ -10,7 +10,7 @@ import {NodeConnectionType} from "n8n-workflow/dist/Interfaces";
 import {ApiDefHelper} from "./helpers/apiDef.helper";
 import {RequestHelper} from "./helpers/request.helper";
 import {RESOURCE_LIST, RESOURCE_SMS, RESOURCE_VERIFICATION} from "./apiDefinition";
-import {executionMapping} from "./execution";
+import {ExecutionFunction, executionMapping} from "./execution";
 import {RequestUriParams} from "./types";
 
 export class EightByEight implements INodeType {
@@ -50,7 +50,7 @@ export class EightByEight implements INodeType {
 
     async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
         const items = this.getInputData();
-        const returnData: INodeExecutionData[] = [];
+        let returnData: INodeExecutionData[] = [];
         const resource = this.getNodeParameter("resource", 0) as RESOURCE_LIST;
         const operation = this.getNodeParameter("operation", 0) as string;
 
@@ -70,7 +70,13 @@ export class EightByEight implements INodeType {
                     throw new Error(`There is no operation ${resource}-${operation}`)
                 }
                 // @ts-ignore
-                return await executionMapping[resource][operation](this, i, requestUriParams, operation);
+                const operationMethod:ExecutionFunction = executionMapping[resource][operation]
+                const operationOutput = await operationMethod({
+                    context: this,
+                    i:i,
+                    requestUriParams: requestUriParams
+                });
+                returnData = returnData.concat(operationOutput);
             } catch (error) {
                 if (this.continueOnFail()) {
                     returnData.push({json: {error: error.message}});

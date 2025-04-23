@@ -1,8 +1,9 @@
 import {IRequestOptions} from "n8n-workflow/dist/Interfaces";
 import {RESOURCE_LIST} from "../apiDefinition";
 import {ApiDefHelper} from "./apiDef.helper";
-import {FormRequest, FormRequestValue, RequestUriParams} from "../types";
+import {FormRequest, FormRequestValue, MethodNames, RequestUriParams} from "../types";
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 export class RequestHelper {
     private static replacePlaceholders(template: string, data: RequestUriParams) {
         return template.replace(/{(\w+)}/g, (_, key) => {
@@ -11,7 +12,7 @@ export class RequestHelper {
         });
     }
 
-    static buildRequest(resource: RESOURCE_LIST, operation: string, uriParams: RequestUriParams, formParams: FormRequest): IRequestOptions {
+    static buildRequest<T>(resource: RESOURCE_LIST, operation: MethodNames<T>, uriParams: RequestUriParams, formParams: FormRequest): IRequestOptions {
         const baseReq: IRequestOptions = {
             headers: {
                 Accept: "application/json",
@@ -19,7 +20,7 @@ export class RequestHelper {
             json: true,
         };
         const baseOperationConfig = ApiDefHelper.getResource(resource);
-        const operationConfig = ApiDefHelper.getOperation(resource, operation);
+        const operationConfig = ApiDefHelper.getOperation<T>(resource, operation);
         baseReq.uri = RequestHelper.replacePlaceholders(baseOperationConfig.base + operationConfig.uri, uriParams);
         baseReq.method = operationConfig.method;
         if (["POST", "PUT"].includes(baseReq.method || '')) {
@@ -67,7 +68,7 @@ export class RequestHelper {
     }
 
     static getAllUriParams(resource: RESOURCE_LIST, operation: string) {
-        const operationDef = ApiDefHelper.getOperation(resource, operation);
+        const operationDef = ApiDefHelper.getOperation<any>(resource, operation);
         const str = ApiDefHelper.getResource(resource).base + operationDef.uri;
         return [...str.matchAll(/{(.*?)}/g)].map(m => m[1]);
     }

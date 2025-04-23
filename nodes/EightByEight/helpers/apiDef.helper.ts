@@ -1,5 +1,6 @@
 import {INodeProperties, INodePropertyOptions} from "n8n-workflow/dist/Interfaces";
 import {apiDefinition, RESOURCE_LIST} from "../apiDefinition";
+import {MethodNames} from "../types";
 
 export class ApiDefHelper {
 
@@ -19,11 +20,11 @@ export class ApiDefHelper {
         return baseOperationConfig;
     }
 
-    static getOperation(resource: RESOURCE_LIST, operationName: string) {
+    static getOperation<T>(resource: RESOURCE_LIST, operationName: MethodNames<T>) {
         const baseOperationConfig = ApiDefHelper.getResource(resource);
         const operationConfig = baseOperationConfig.operations.find(operation => operation.operation === operationName);
         if (!operationConfig) {
-            throw new Error(`Could not find operation by name: ${operationName}`)
+            throw new Error(`Could not find operation by name: '${operationName as string}' for resource ${resource}`)
         }
         return operationConfig;
     }
